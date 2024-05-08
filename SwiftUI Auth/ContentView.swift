@@ -8,14 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var authMgr : AuthManager = AuthManager()
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+             LoginScreen()
         }
+        .alert(isPresented: $authMgr.showAlert,
+               content: {
+            Alert(title: Text("Error"),
+                  message: Text(authMgr.errorDescription?.description ?? ""),
+                  dismissButton:.cancel(Text("OK")
+                                       )
+            )
+        }
+        )
         .padding()
+        .environmentObject(authMgr)
     }
 }
 
